@@ -1,22 +1,27 @@
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class Robot : RobotFreeAnim
 {
     
-    [SerializeField] private int movementForce = 4;
-    [SerializeField] private int rollingForce = 12;
+    [SerializeField] int movementForce = 4;
+    [SerializeField] float rollingForce = 12;
 
+    private Light vision;
+    public bool ceiling = false;
     private CapsuleCollider capsule;
     private SphereCollider sphere;
-    private bool startUp = true;
-    private float time;
+  
     private Rigidbody  rb;
     bool rolling = false;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-       sphere = GetComponent<SphereCollider>();
-       capsule = GetComponent<CapsuleCollider>();
+        vision = GetComponent<Light>();
+        sphere = GetComponent<SphereCollider>();
+        capsule = GetComponent<CapsuleCollider>();
         rb =  GetComponent<Rigidbody>();
     }
 
@@ -29,9 +34,10 @@ public class Robot : RobotFreeAnim
         
         if (startUp != true)
         {
-            if (Input.GetKeyDown(KeyCode.Space) &&  walking != true)
+            if (Input.GetKeyDown(KeyCode.Space) &&  walking != true && ceiling != true)
             {
-                capsule.enabled = !capsule.enabled;
+                vision.enabled = !vision.enabled;
+                capsule.enabled = !capsule.enabled; 
                 sphere.enabled = !sphere.enabled;
                 rolling = !rolling;
                 time = 0;
@@ -39,13 +45,19 @@ public class Robot : RobotFreeAnim
         }
     }
 
-    void StartUpTimer()
+    void OnCollisionEnter(Collision other)
     {
-        time += Time.deltaTime;
-        if (time >= 3.5)
+        if (other.gameObject.CompareTag("Wall"))
         {
+            rolling = false;
             time = 0;
-            startUp = false;
+        }
+    }
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Battery"))
+        {
+            Destroy(other.gameObject);
         }
     }
 
@@ -62,19 +74,30 @@ public class Robot : RobotFreeAnim
             else if (walking)
             {
                 walking = false;
+                ceiling = false;
             }
             
             if (rolling)
             {
+                if (Physics.Raycast(transform.position, Vector3.up, transform.localScale.y * 0.5f))
+                {
+                    ceiling = true;
+                }
+                else
+                {
+                    ceiling = false;
+                }
+
+                
                 if (Input.GetKey(KeyCode.W))
                 {
                     walking = true;
                 }
                 else if (walking)
-                {
+                {   
                     walking = false;
                 }
-               
+                
                 
                 time += Time.deltaTime;
                 if (time >= 2)
@@ -86,11 +109,6 @@ public class Robot : RobotFreeAnim
             
            
         }
-       
-
-        
-           
-
     }
     
 }
