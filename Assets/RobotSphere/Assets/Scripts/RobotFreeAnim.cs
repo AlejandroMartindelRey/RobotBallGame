@@ -21,6 +21,7 @@ public class RobotFreeAnim : MonoBehaviour
 	// Use this for initialization
 	void Awake()
 	{
+		
 		animationrb = GetComponent<Rigidbody>();
 		player = GetComponent<Robot>();
 		anim = gameObject.GetComponent<Animator>();

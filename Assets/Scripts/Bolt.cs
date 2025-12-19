@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class BatteryMovement : MonoBehaviour
+public class Bolt : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private float speed = 0.01f;
     private float amplitude = 0.01f;
-    [SerializeField] private AudioClip batterySound;
+    [SerializeField] private AudioClip boltSound;
     private Vector3 basePosition;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()

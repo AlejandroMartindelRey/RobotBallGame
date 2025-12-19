@@ -2828,8 +2828,11 @@ MonoBehaviour:
   time: 0
   startUp: 1
   walking: 0
-  movementForce: 1
-  rollingForce: 3
+  _scoreText: {fileID: 0}
+  _batteryText: {fileID: 0}
+  movementForce: 40
+  rollingForce: 4
+  Button: {fileID: 0}
   ceiling: 0
 --- !u!114 &114253073084258262
 MonoBehaviour:
@@ -2949,9 +2952,9 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 0
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 30
-  m_Range: 100
+  m_Color: {r: 0, g: 0.9463024, b: 1, a: 1}
+  m_Intensity: 1
+  m_Range: 20
   m_SpotAngle: 89.83754
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -4654,10 +4657,10 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7843942323609622636}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.18049192, y: -0, z: -0, w: 0.9835765}
-  m_LocalPosition: {x: 0, y: 0.0483, z: 0}
+  m_LocalRotation: {x: 0.039743576, y: -0, z: -0, w: 0.99920994}
+  m_LocalPosition: {x: 0, y: 0.213, z: -0.007}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4431084402279646}
-  m_LocalEulerAnglesHint: {x: 20.797, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 4.555, y: 0, z: 0}

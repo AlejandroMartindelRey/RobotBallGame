@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Battery
   - Wall
+  - Bolt
+  - Button
+  - EndingZone
   layers:
   - Default
   - TransparentFX

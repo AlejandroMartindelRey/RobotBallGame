@@ -1,3 +1,5 @@
+using System;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
@@ -6,9 +8,16 @@ using UnityEngine.Experimental.GlobalIllumination;
 public class Robot : RobotFreeAnim
 {
     
+    [SerializeField] TMP_Text _scoreText;
+    [SerializeField] TMP_Text _batteryText;
+    
     [SerializeField] int movementForce = 4;
     [SerializeField] float rollingForce = 12;
 
+    [SerializeField] GameObject Button;
+    
+    private int score = 0;
+    private int batteries = 0;
     private Light vision;
     public bool ceiling = false;
     private CapsuleCollider capsule;
@@ -19,6 +28,8 @@ public class Robot : RobotFreeAnim
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        _batteryText.SetText("X " + batteries);
+        _scoreText.SetText("SCORE: " + score);
         vision = GetComponent<Light>();
         sphere = GetComponent<SphereCollider>();
         capsule = GetComponent<CapsuleCollider>();
@@ -57,7 +68,31 @@ public class Robot : RobotFreeAnim
     {
         if (other.gameObject.CompareTag("Battery"))
         {
+            batteries++;
+            _batteryText.SetText("X " + batteries);
             Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.CompareTag("Bolt"))
+        {
+            score += 100;
+            _scoreText.SetText("SCORE: " + score);
+            Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.CompareTag("EndingZone"))
+        {
+            Destroy(this.gameObject);
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("Button"))
+        {
+            if (Input.GetKeyDown(KeyCode.E) && batteries >= 2)
+            {
+                Button.GetComponent<Button>().OpenDoor();
+            }
         }
     }
 
@@ -68,7 +103,7 @@ public class Robot : RobotFreeAnim
         {
             if (Input.GetKey(KeyCode.W) && rolling != true)
             {
-                rb.AddForce(transform.forward * movementForce , ForceMode.Impulse);
+                rb.AddForce(transform.forward * movementForce , ForceMode.Force);
                 walking = true;
             }
             else if (walking)
