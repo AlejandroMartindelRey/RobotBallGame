@@ -2,10 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class RobotFreeAnim : MonoBehaviour
 {
-
+	public AudioSource sfx;
+	[SerializeField] public AudioClip openingSound;
+	
 	private Rigidbody animationrb;
 	private Robot player;
 	
@@ -26,6 +29,13 @@ public class RobotFreeAnim : MonoBehaviour
 		player = GetComponent<Robot>();
 		anim = gameObject.GetComponent<Animator>();
 		gameObject.transform.eulerAngles = rot;
+		sfx = GetComponent<AudioSource>();
+
+	}
+
+	void Start()
+	{
+		sfx.PlayOneShot(openingSound);
 	}
 
 	// Update is called once per frame
@@ -79,6 +89,7 @@ public class RobotFreeAnim : MonoBehaviour
 			if (anim.GetBool("Roll_Anim"))
 			{
 				anim.SetBool("Roll_Anim", false);
+				
 			}
 			else
 			{

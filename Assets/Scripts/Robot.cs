@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Experimental.GlobalIllumination;
+using UnityEngine.SceneManagement;
 
 public class Robot : RobotFreeAnim
 {
@@ -34,6 +35,7 @@ public class Robot : RobotFreeAnim
         sphere = GetComponent<SphereCollider>();
         capsule = GetComponent<CapsuleCollider>();
         rb =  GetComponent<Rigidbody>();
+  
     }
 
     void Update()
@@ -60,6 +62,7 @@ public class Robot : RobotFreeAnim
     {
         if (other.gameObject.CompareTag("Wall"))
         {
+            vision.enabled = !vision.enabled;
             rolling = false;
             time = 0;
         }
@@ -70,29 +73,26 @@ public class Robot : RobotFreeAnim
         {
             batteries++;
             _batteryText.SetText("X " + batteries);
-            Destroy(other.gameObject);
         }
 
         if (other.gameObject.CompareTag("Bolt"))
         {
             score += 100;
             _scoreText.SetText("SCORE: " + score);
-            Destroy(other.gameObject);
+           
         }
 
         if (other.gameObject.CompareTag("EndingZone"))
         {
             Destroy(this.gameObject);
+            SceneManager.LoadScene(2);
         }
     }
     private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Button"))
+        if (other.gameObject.CompareTag("Button") && Input.GetKey(KeyCode.E) && batteries >= 2)
         {
-            if (Input.GetKeyDown(KeyCode.E) && batteries >= 2)
-            {
-                Button.GetComponent<Button>().OpenDoor();
-            }
+            Button.GetComponent<Button>().OpenDoor();
         }
     }
 
@@ -114,6 +114,7 @@ public class Robot : RobotFreeAnim
             
             if (rolling)
             {
+                
                 if (Physics.Raycast(transform.position, Vector3.up, transform.localScale.y * 0.5f))
                 {
                     ceiling = true;
